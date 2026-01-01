@@ -1,3 +1,4 @@
+// --- BACKGROUND FIREWORKS LOGIC ---
 const canvas = document.getElementById('bgCanvas');
 const ctx = canvas.getContext('2d');
 canvas.width = window.innerWidth;
@@ -34,6 +35,43 @@ function handleParticles() {
         if (particles[i].size <= 0.2) {
             particles.splice(i, 1);
             i--;
+        }
+    }
+}
+
+function autoFirework() {
+    const x = Math.random() * canvas.width;
+    const y = Math.random() * canvas.height;
+    const color = `hsl(${Math.random() * 360}, 100%, 50%)`;
+    for (let i = 0; i < 20; i++) {
+        particles.push(new Particle(x, y, color));
+    }
+}
+
+function animate() {
+    ctx.fillStyle = 'rgba(5, 5, 26, 0.2)'; // Fades the tail
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    handleParticles();
+    if (Math.random() < 0.05) autoFirework();
+    requestAnimationFrame(animate);
+}
+animate();
+
+// --- BUTTON CELEBRATION LOGIC ---
+document.getElementById('celebrateBtn').addEventListener('click', () => {
+    // This creates the explosion of colorful paper (Confetti)
+    confetti({
+        particleCount: 150,
+        spread: 100,
+        origin: { y: 0.6 },
+        colors: ['#ffd700', '#ffffff', '#ff4757', '#2f3542']
+    });
+});
+
+window.addEventListener('resize', () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+});
         }
     }
 }
